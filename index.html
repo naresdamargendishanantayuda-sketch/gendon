@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gendon Nano Cyber Lab</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#020617;color:#e5e7eb;overflow-x:hidden}.matrix{position:fixed;inset:0;z-index:-1;opacity:.22}header{text-align:center;padding:40px 20px;background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(2,6,23,.4))}h1{font-size:clamp(34px,7vw,64px);margin:0;color:#22c55e;text-shadow:0 0 18px #22c55e}header p{color:#cbd5e1}.container{width:min(1150px,94%);margin:auto}.menu{text-align:center;margin:18px 0}.menu button,.btn{margin:6px;padding:14px 18px;border:none;border-radius:12px;background:#1e293b;color:white;font-weight:bold;cursor:pointer;box-shadow:0 0 15px rgba(34,197,94,.15);transition:.2s}.menu button:hover,.btn:hover{transform:translateY(-3px);background:#334155}.panel{display:none;background:rgba(15,23,42,.92);border:1px solid rgba(34,197,94,.25);border-radius:22px;padding:22px;margin:20px 0;box-shadow:0 0 30px rgba(34,197,94,.08)}.panel.active{display:block;animation:pop .25s ease}@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.card{background:#111827;border:1px solid rgba(148,163,184,.22);border-radius:18px;padding:18px}.stat{font-size:38px;font-weight:900;color:#22c55e}.question{font-size:22px;font-weight:bold}.option{display:block;width:100%;text-align:left;margin:10px 0;padding:14px;border-radius:12px;border:1px solid #334155;background:#0f172a;color:white;cursor:pointer}.option:hover{background:#1e293b}.good{color:#22c55e}.bad{color:#ef4444}.warn{color:#facc15}.result{margin-top:15px;background:#020617;border-left:5px solid #22c55e;border-radius:14px;padding:16px}input{width:100%;padding:13px;border-radius:10px;border:none;margin:8px 0}.terminal{background:#000;color:#22c55e;border-radius:16px;padding:16px;font-family:monospace;min-height:140px;white-space:pre-line;box-shadow:inset 0 0 20px rgba(34,197,94,.18)}.leader li{margin:8px 0}.small{font-size:13px;color:#94a3b8}footer{text-align:center;padding:28px;color:#94a3b8}</style>
+</head>
+<body>
+<canvas class="matrix" id="matrix"></canvas>
+<header>
+<h1>🛡️ Gendon Nano Cyber Lab</h1>
+<p>Cyber security awareness, quiz 1 menit, demo aman, dan leaderboard</p>
+</header>
+
+<main class="container">
+<div class="menu">
+<button onclick="show('home')">🏠 Home</button>
+<button onclick="show('materi')">📚 Materi</button>
+<button onclick="show('exam')">🔥 Mode Ujian</button>
+<button onclick="show('demo')">🧪 Demo</button>
+<button onclick="show('leaderboard')">🏆 Leaderboard</button>
+</div>
+
+<section id="home" class="panel active">
+<h2>Selamat datang, Cyber Explorer!</h2>
+<div class="grid">
+<div class="card"><h3>🎯 Target</h3><p>Pelajari keamanan digital dengan cara cepat, visual, dan interaktif.</p></div>
+<div class="card"><h3>⏱️ Challenge</h3><p>Jawab 10 soal dalam 60 detik. Setiap jawaban benar bernilai 10 poin.</p></div>
+<div class="card"><h3>🌍 Online</h3><p>Upload ke internet pakai GitHub Pages, Netlify, Vercel, atau ngrok.</p></div>
+</div>
+</section>
+
+<section id="materi" class="panel">
+<h2>📚 Materi Cyber Security</h2>
+<div class="grid">
+<div class="card"><h3>1. Phishing</h3><p>Penipuan yang menyamar sebagai pihak resmi untuk mencuri akun, OTP, password, atau data pribadi.</p><ul><li>Cek URL</li><li>Jangan klik link mencurigakan</li><li>Waspada pesan mendesak</li></ul></div>
+<div class="card"><h3>2. Password Security</h3><p>Password kuat sebaiknya panjang, unik, dan berbeda untuk tiap akun. Gunakan password manager.</p></div>
+<div class="card"><h3>3. Malware</h3><p>Program berbahaya seperti virus, trojan, ransomware, spyware, dan worm.</p></div>
+<div class="card"><h3>4. Social Engineering</h3><p>Teknik manipulasi manusia agar korban memberikan data rahasia secara sukarela.</p></div>
+<div class="card"><h3>5. HTTPS</h3><p>HTTPS mengenkripsi data antara browser dan server sehingga lebih aman dari penyadapan.</p></div>
+<div class="card"><h3>6. 2FA / MFA</h3><p>Lapisan keamanan tambahan selain password, misalnya OTP, authenticator app, atau security key.</p></div>
+<div class="card"><h3>7. WiFi Publik</h3><p>Hindari login akun penting di WiFi publik tanpa perlindungan. Gunakan HTTPS dan VPN jika perlu.</p></div>
+<div class="card"><h3>8. Backup</h3><p>Backup membantu memulihkan data saat terkena ransomware, kerusakan perangkat, atau human error.</p></div>
+</div>
+</section>
+
+<section id="exam" class="panel">
+<h2>🔥 Mode Ujian 1 Menit</h2>
+<div class="grid">
+<div class="card"><p>Waktu</p><div class="stat" id="timer">60</div></div>
+<div class="card"><p>Skor</p><div class="stat" id="score">0</div></div>
+<div class="card"><p>Soal</p><div class="stat"><span id="qnum">0</span>/10</div></div>
+</div>
+<br>
+<button class="btn" onclick="startExam()">Mulai Ujian</button>
+<button class="btn" onclick="resetExam()">Reset</button>
+<div id="quizBox" class="result">Klik “Mulai Ujian”.</div>
+</section>
+
+<section id="demo" class="panel">
+<h2>🧪 Demo Aman</h2>
+<div class="grid">
+<div class="card"><h3>Password Checker</h3><input id="pass" placeholder="Contoh: Cyber@2026!" oninput="checkPass()"><div id="passResult" class="result">Masukkan password contoh.</div></div>
+<div class="card"><h3>HTTP vs HTTPS</h3><button class="btn" onclick="httpDemo()">HTTP</button><button class="btn" onclick="httpsDemo()">HTTPS</button><div id="netResult" class="result">Pilih mode koneksi.</div></div>
+<div class="card"><h3>Terminal Hacker Effect</h3><button class="btn" onclick="runTerminal()">Jalankan Efek</button><div id="terminal" class="terminal">GENDON_NANO_SYSTEM READY...</div></div>
+</div>
+</section>
+
+<section id="leaderboard" class="panel">
+<h2>🏆 Leaderboard</h2>
+<div class="card">
+<p>Masukkan nama setelah ujian selesai.</p>
+<input id="player" placeholder="Nama peserta">
+<button class="btn" onclick="saveScore()">Simpan Skor</button>
+<button class="btn" onclick="clearLeader()">Hapus Leaderboard Lokal</button>
+<ol id="leaders" class="leader"></ol>
+<p class="small">Catatan: leaderboard ini tersimpan di browser/device. Untuk leaderboard online sungguhan, perlu backend seperti Firebase/Supabase. Web statis saja tidak bisa menyimpan skor semua orang secara global tanpa database.</p>
+</div>
+</section>
+</main>
+<footer>Gunakan hanya untuk edukasi dan awareness. Jangan menyerang perangkat orang lain.</footer>
+
+<script>
+function show(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active')}
+
+const questions=[
+{q:'Apa itu phishing?',a:['Penipuan untuk mencuri data','Antivirus','Backup data','Jenis kabel jaringan'],c:0},
+{q:'Password paling kuat adalah...',a:['123456','password','Cyber@2026Secure!','nama123'],c:2},
+{q:'Fungsi HTTPS adalah...',a:['Mempercepat keyboard','Mengenkripsi koneksi','Menghapus virus','Mematikan firewall'],c:1},
+{q:'2FA berguna untuk...',a:['Menambah lapisan keamanan','Menghapus akun','Membuat password pendek','Membuka semua file'],c:0},
+{q:'Contoh malware adalah...',a:['Ransomware','Keyboard','Monitor','Browser'],c:0},
+{q:'Ciri link phishing adalah...',a:['Domain aneh dan mendesak','Domain resmi','HTTPS valid','Tidak meminta data'],c:0},
+{q:'OTP sebaiknya...',a:['Dibagikan ke teman','Dikirim ke penipu','Dirahasiakan','Ditulis di komentar'],c:2},
+{q:'WiFi publik berisiko karena...',a:['Bisa disadap','Selalu lebih aman','Tidak butuh password','Tidak bisa internet'],c:0},
+{q:'Backup penting untuk...',a:['Pemulihan data','Membuat virus','Mencuri akun','Menghapus keamanan'],c:0},
+{q:'Social engineering menyerang...',a:['Manusia/psikologi korban','Kabel listrik','Monitor','Printer'],c:0}
+];
+let index=0,score=0,time=60,tick=null,examActive=false;
+function startExam(){index=0;score=0;time=60;examActive=true;document.getElementById('score').innerText=score;document.getElementById('timer').innerText=time;showQuestion();clearInterval(tick);tick=setInterval(()=>{time--;document.getElementById('timer').innerText=time;if(time<=0)finishExam()},1000)}
+function resetExam(){clearInterval(tick);index=0;score=0;time=60;examActive=false;document.getElementById('score').innerText=0;document.getElementById('timer').innerText=60;document.getElementById('qnum').innerText=0;document.getElementById('quizBox').innerHTML='Klik “Mulai Ujian”.'}
+function showQuestion(){if(index>=questions.length){finishExam();return}let q=questions[index];document.getElementById('qnum').innerText=index+1;document.getElementById('quizBox').innerHTML='<div class="question">'+q.q+'</div>'+q.a.map((x,i)=>'<button class="option" onclick="answer('+i+')">'+x+'</button>').join('')}
+function answer(i){if(!examActive)return;let q=questions[index];if(i===q.c){score+=10;document.getElementById('score').innerText=score}index++;showQuestion()}
+function finishExam(){if(!examActive)return;examActive=false;clearInterval(tick);let title=score>=80?'Cyber Guardian':score>=60?'Security Explorer':score>=40?'Awareness Rookie':'Perlu Belajar Lagi';document.getElementById('quizBox').innerHTML='<h3 class="good">Ujian selesai!</h3><p>Skor kamu: <b>'+score+'</b>/100</p><p>Rank: <b>'+title+'</b></p><p>Buka menu Leaderboard untuk menyimpan skor.</p>';show('leaderboard');renderLeader()}
+function saveScore(){let name=document.getElementById('player').value.trim()||'Anonim';let data=JSON.parse(localStorage.getItem('gn_leader')||'[]');data.push({name,score,date:new Date().toLocaleString()});data.sort((a,b)=>b.score-a.score);localStorage.setItem('gn_leader',JSON.stringify(data.slice(0,10)));document.getElementById('player').value='';renderLeader()}
+function renderLeader(){let data=JSON.parse(localStorage.getItem('gn_leader')||'[]');document.getElementById('leaders').innerHTML=data.length?data.map(x=>'<li><b>'+x.name+'</b> — '+x.score+' poin <span class="small">('+x.date+')</span></li>').join(''):'<li>Belum ada skor.</li>'}
+function clearLeader(){localStorage.removeItem('gn_leader');renderLeader()}
+function checkPass(){let p=document.getElementById('pass').value;let s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;let r='';if(!p)r='Masukkan password contoh.';else if(s<=2)r='<b class="bad">Lemah</b><br>Tambahkan panjang, angka, huruf besar, dan simbol.';else if(s<=4)r='<b class="warn">Sedang</b><br>Sudah lumayan, tapi bisa lebih panjang.';else r='<b class="good">Kuat</b><br>Password contoh ini kuat.';document.getElementById('passResult').innerHTML=r}
+function httpDemo(){document.getElementById('netResult').innerHTML='<b class="bad">HTTP tidak aman:</b><br><code>username=andi&password=123456</code>'}
+function httpsDemo(){document.getElementById('netResult').innerHTML='<b class="good">HTTPS lebih aman:</b><br><code>x92#Encrypted@Data!!</code>'}
+function runTerminal(){let lines=['Initializing cyber awareness module...','Scanning fake phishing links...','Checking password entropy...','Encrypting demo traffic...','Loading quiz engine...','System status: SAFE MODE ACTIVE ✅'];let el=document.getElementById('terminal');el.innerText='';let i=0;let t=setInterval(()=>{el.innerText+=lines[i]+'\n';i++;if(i>=lines.length)clearInterval(t)},400)}
+
+const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');function resize(){canvas.width=innerWidth;canvas.height=innerHeight}resize();addEventListener('resize',resize);let chars='01GENDONNANOSECURITY';let font=16;let cols=Math.floor(canvas.width/font);let drops=Array(cols).fill(1);setInterval(()=>{ctx.fillStyle='rgba(2,6,23,.12)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#22c55e';ctx.font=font+'px monospace';for(let i=0;i<drops.length;i++){let text=chars[Math.floor(Math.random()*chars.length)];ctx.fillText(text,i*font,drops[i]*font);if(drops[i]*font>canvas.height&&Math.random()>.975)drops[i]=0;drops[i]++}},45);
+renderLeader();
+</script>
+</body>
+</html>
